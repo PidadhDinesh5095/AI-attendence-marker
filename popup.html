@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance Marker</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h2>Attendance Marker</h2>
+
+    <input type="file" id="imageInput" accept="image/*">
+    <button id="extractBtn">Extract</button>
+    <div id="loading" class="hidden">Extracting...</div>
+
+    <h3>Extracted Numbers</h3>
+    <div id="numbersContainer">
+        <ul id="numbersList"></ul>
+    </div>
+
+    <input type="text" id="manualInput" placeholder="Enter 2-character code">
+    <button id="addNumberBtn">Add</button>
+
+    <button id="markCheckBoxes">Mark Attendance</button>
+    <div id="markingStatus" class="hidden">Marking Attendance...</div>
+
+    <h3>Results</h3>
+    <div id="resultsContainer">
+        <p>✅ Marked: <span id="markedNumbers"></span></p>
+        <p>❌ Not Found: <span id="notFoundNumbers"></span></p>
+    </div>
+
+    <script src="popup.js"></script>
+</body>
+</html>
