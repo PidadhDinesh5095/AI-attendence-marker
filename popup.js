@@ -1,5 +1,16 @@
 const GEMINI_API_KEY = "AIzaSyBa1rUNG9UcKa4YZbrd7QLJlsYhIazG_z8";
 
+const branchSectionData = {
+    "CSE": { "1": "A1-A9", "2": "B1-B9", "3": "C1-C9", "4": "D1-D9" },
+    "EEE": { "1": "E1-E9", "2": "F1-F9", "3": "G1-G9", "4": "H1-H9" },
+    "CE": { "1": "I1-I9", "2": "J1-J9", "3": "K1-K9", "4": "L1-L9" },
+    "ECE": { "1": "M1-M9", "2": "N1-N9", "3": "O1-O9", "4": "P1-P9" },
+    "CSM": { "1": "Q1-Q9", "2": "R1-R9", "3": "S1-S9", "4": "T1-T9" },
+    "CSD": { "1": "U1-U9", "2": "V1-V9", "3": "W1-W9", "4": "X1-X9" },
+    "CSC": { "1": "Y1-Y9", "2": "Z1-Z9", "3": "A1-A9", "4": "B1-B9" },
+    "CSB": { "1": "C1-C9", "2": "D1-D9", "3": "E1-E9", "4": "F1-F9" }
+};
+
 document.getElementById("extractBtn").addEventListener("click", async () => {
     const fileInput = document.getElementById("imageInput");
     if (fileInput.files.length === 0) return alert("Please select an image.");
@@ -12,7 +23,16 @@ document.getElementById("extractBtn").addEventListener("click", async () => {
     reader.onload = async () => {
         try {
             const base64Image = reader.result.split(",")[1];
-            const extractedNumbers = await extractNumbersWithGemini(base64Image);
+
+            const branch = document.getElementById("branch").value;
+            const section = document.getElementById("section").value;
+            let range = "";
+
+            if (branch && section && branchSectionData[branch] && branchSectionData[branch][section]) {
+                range = ` - ${branchSectionData[branch][section]}`;
+            }
+
+            const extractedNumbers = await extractNumbersWithGemini(base64Image, range);
 
             document.getElementById("numbersList").innerHTML = "";
             document.getElementById("markedNumbers").innerHTML = "";
@@ -34,15 +54,17 @@ document.getElementById("extractBtn").addEventListener("click", async () => {
     reader.readAsDataURL(file);
 });
 
-async function extractNumbersWithGemini(base64Image) {
+async function extractNumbersWithGemini(base64Image, range) {
     try {
+        const promptText = `Extract only two-character values that are either purely numeric (e.g., 77, 09) or alphanumeric (e.g., L4, i7, m2). Do not include extra characters, symbols, or words. Extract only values within the range:${range} If any extracted value is in lowercase, convert it to uppercase in the output. Return only the extracted values as a comma-separated list.`;
+
         const response = await fetch(`https://generativelanguage.googleapis.com/v1/models/gemini-1.5-pro:generateContent?key=${GEMINI_API_KEY}`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
                 contents: [{
                     parts: [
-                        { text: "Extract only two-character values that are either purely numeric (e.g., 77, 09) or alphanumeric (e.g., L4, i7, m2). Do not include extra characters, symbols, or words. Extract only values within the range:  - I1 to I9  - J1 to J9  - K1 to K9  - L1 to L9  - M1 to M9  - N1 to N9  - O1 to O4  If any extracted value is in lowercase, convert it to uppercase in the output. Return only the extracted values as a comma-separated list." },
+                        { text: promptText },
                         { inlineData: { mimeType: "image/png", data: base64Image } }
                     ]
                 }],
@@ -126,16 +148,29 @@ function markMatchingCheckboxes(numbers) {
     let marked = [];
     let notFound = [];
 
+    if (checkboxes.length === 0) {
+        alert("No checkboxes found on this page.");
+        return { marked, notFound };
+    }
+
     numbers.forEach(num => {
         let found = false;
+        let extractedNum = num.toUpperCase();
+
         checkboxes.forEach(checkbox => {
-            if (checkbox.name.includes(num)) {
+            let checkboxName = checkbox.name.toUpperCase();
+            if (checkboxName.endsWith(extractedNum)) {
                 checkbox.checked = true;
                 found = true;
             }
         });
-        found ? marked.push(num) : notFound.push(num);
+
+        found ? marked.push(extractedNum) : notFound.push(extractedNum);
     });
+
+    if (marked.length === 0) {
+        alert("No matching checkboxes found.");
+    }
 
     return { marked, notFound };
 }
