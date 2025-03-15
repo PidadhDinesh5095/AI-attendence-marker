@@ -9,6 +9,28 @@
 <body>
     <h2>Attendance Marker</h2>
 
+    <label for="branch">Branch:</label>
+    <select id="branch">
+        <option value="">Select Branch</option>
+        <option value="CSE">CSE</option>
+        <option value="EEE">EEE</option>
+        <option value="CE">CE</option>
+        <option value="ECE">ECE</option>
+        <option value="CSM">CSM</option>
+        <option value="CSD">CSD</option>
+        <option value="CSC">CSC</option>
+        <option value="CSB">CSB</option>
+    </select>
+    
+    <label for="section">Section:</label>
+    <select id="section">
+        <option value="">Select Section</option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+    </select>
+
     <input type="file" id="imageInput" accept="image/*">
     <button id="extractBtn">Extract</button>
     <div id="loading" class="hidden">Extracting...</div>
