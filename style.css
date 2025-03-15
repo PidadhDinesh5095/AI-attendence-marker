@@ -26,12 +26,19 @@ h2 {
     margin-top: 10px;
 }
 
-.file-label {
+label {
     font-weight: bold;
+    display: block;
+    margin-top: 10px;
 }
 
-input[type="file"] {
-    margin-bottom: 10px;
+select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background: white;
+    font-size: 14px;
 }
 
 button {
@@ -62,17 +69,15 @@ button:hover {
     display: none;
 }
 
-/* Scrollable Number List */
 #numbersContainer {
-    max-height: 150px; /* Fixed height */
-    overflow-y: auto; /* Enable scrolling */
+    max-height: 150px;
+    overflow-y: auto;
     border: 1px solid #ddd;
     padding: 5px;
     border-radius: 5px;
     background: white;
 }
 
-/* Styling for the extracted numbers list */
 #numbersList {
     list-style: none;
     padding: 0;
@@ -91,7 +96,6 @@ button:hover {
     border: 1px solid #ddd;
 }
 
-/* Delete button */
 .delete-btn {
     background: red;
     color: white;
@@ -113,7 +117,6 @@ button:hover {
     background: darkred;
 }
 
-/* Manual entry section */
 .manual-entry {
     display: flex;
     gap: 8px;
@@ -127,7 +130,6 @@ button:hover {
     border-radius: 5px;
 }
 
-/* Marking results */
 #resultsContainer {
     border: 1px solid #ddd;
     padding: 10px;
