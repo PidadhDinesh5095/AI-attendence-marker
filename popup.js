@@ -1,4 +1,4 @@
-const GEMINI_API_KEY = "AIzaSyBa1rUNG9UcKa4YZbrd7QLJlsYhIazG_z8";
+const GEMINI_API_KEY = "USE_YOUR_API_KEY";
 
 const branchSectionData = {
     "CSE": { "1": "01-60", "2": "01-98,A-C", "3": "C-L,01-98", "4": "I-O,01-98" },
